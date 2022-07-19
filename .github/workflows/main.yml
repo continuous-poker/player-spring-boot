@@ -43,7 +43,7 @@ jobs:
 
       - name: Deploy
         run: |-
-          echo "${{ secrets.DEPLOYMENT_TOKEN }}" > kubeconfig.yaml
+          echo "${{ env.DEPLOYMENT_TOKEN }}" > kubeconfig.yaml
           kubectl --kubeconfig kubeconfig.yaml apply -f target/classes/META-INF/jkube/kubernetes.yml
           kubectl --kubeconfig kubeconfig.yaml rollout status deployment/${{ env.DEPLOYMENT_NAME }}
           kubectl --kubeconfig kubeconfig.yaml get services -o wide
