@@ -45,6 +45,6 @@ jobs:
         run: |-
           echo "${{ env.DEPLOYMENT_TOKEN }}" > kubeconfig.yaml
           kubectl --kubeconfig kubeconfig.yaml apply -f target/classes/META-INF/jkube/kubernetes.yml
-          kubectl --kubeconfig kubeconfig.yaml rollout status deployment/${{ env.DEPLOYMENT_NAME }}
+          kubectl --kubeconfig kubeconfig.yaml --namespace techdays rollout status deployment/${{ env.DEPLOYMENT_NAME }}
           kubectl --kubeconfig kubeconfig.yaml --namespace techdays get services -o wide
           rm kubeconfig.yaml
