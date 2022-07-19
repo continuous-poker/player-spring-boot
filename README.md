@@ -6,10 +6,8 @@ Your task is to implement the best poker player logic! :)
 1. Choose a team name (PokerPenguins?)
 2. Fork this repository
 3. Add the following secrets (values will be provided by the facilitator):
-   * GCP_PROJECT
-   * GCP_CLUSTER
-   * GCP_EMAIL
-   * GCP_ACCOUNT_KEY
+   * TOKEN
+   * PORT
    * TEAMNAME (your team name - only letters, digits and dashes)
 4. Run the main workflow in GitHub - it will be deployed automatically
 5. Notify the facilitator once you are done :)

@@ -1,10 +1,9 @@
 on: [push]
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  GKE_CLUSTER: ${{ secrets.GCP_CLUSTER }}    # Add your cluster name here.
-  GKE_ZONE: us-central1   # Add your cluster zone here.
-  DEPLOYMENT_NAME: ${{ secrets.TEAMNAME }} # Add your deployment name here.
+  DEPLOYMENT_NAME: ${{ secrets.TEAMNAME }}
+  DEPLOYMENT_PORT: ${{ secrets.PORT }}
+  DEPLOYMENT_TOKEN: ${{ secrets.TOKEN }}
 
 jobs:
   build:
@@ -31,27 +30,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: |
-          mvn --batch-mode --update-snapshots clean spring-boot:build-image k8s:resource -Dspring-boot.build-image.imageName=gcr.io/${{ env.PROJECT_ID }}/${{ env.DEPLOYMENT_NAME }}:latest -Ddeployment.name=${{ env.DEPLOYMENT_NAME }}
+          mvn --batch-mode --update-snapshots clean spring-boot:build-image k8s:resource -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository_owner }}/${{ env.DEPLOYMENT_NAME }}:latest -Ddeployment.name=${{ env.DEPLOYMENT_NAME }} -Ddeployment.port=${{ env.DEPLOYMENT_PORT }}
 
-      - name: Login to GCP
-        uses: google-github-actions/setup-gcloud@v0.6.0
-        with:
-          service_account_email: ${{ secrets.GCP_EMAIL }}
-          service_account_key: ${{ secrets.GCP_ACCOUNT_KEY }}
-          project_id: ${{ env.PROJECT_ID }}
-          export_default_credentials: true
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Push the Docker image to GCP
+      - name: Push the Docker image to GHCR
         run: |
-          gcloud auth configure-docker --quiet
-          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.DEPLOYMENT_NAME }}
+          docker push ghcr.io/${{ github.repository_owner }}/${{ env.DEPLOYMENT_NAME }}
 
-      # Get the GKE credentials so we can deploy to the cluster
-      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+      - uses: tale/kubectl-action@v1
         with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-          credentials: ${{ secrets.GCP_ACCOUNT_KEY }}
+          base64-kube-config: ${{ secrets.DEPLOYMENT_TOKEN }}
 
       - name: Deploy
         run: |-

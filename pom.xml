@@ -25,8 +25,9 @@
 		<spring-boot.build-image.imageName>continuous-poker/${project.artifactId}:latest</spring-boot.build-image.imageName>
 		<jkube.generator.name>${spring-boot.build-image.imageName}</jkube.generator.name>
 		<deployment.name>${project.artifactId}</deployment.name>
-		<jkube.enricher.jkube-service.name>${deployment.name}</jkube.enricher.jkube-service.name>
+		<deployment.port>30000</deployment.port>
 		<jkube.enricher.jkube-controller.name>${deployment.name}</jkube.enricher.jkube-controller.name>
+		<jkube.offline>true</jkube.offline>
 	</properties>
 
 	<dependencies>
@@ -65,6 +66,23 @@
 				<groupId>org.eclipse.jkube</groupId>
 				<artifactId>kubernetes-maven-plugin</artifactId>
 				<version>1.8.0</version>
+				<configuration>
+					<resources>
+						<services>
+							<service>
+								<name>${deployment.name}</name>
+								<type>NodePort</type>
+								<ports>
+									<port>
+										<port>8080</port>
+										<targetPort>8080</targetPort>
+										<nodePort>${deployment.port}</nodePort>
+									</port>
+								</ports>
+							</service>
+						</services>
+					</resources>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
