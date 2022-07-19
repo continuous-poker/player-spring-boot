@@ -29,7 +29,7 @@ public enum Rank {
       return token;
    }
 
-   @JsonCreator
+   @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
    public static Rank forToken(final String token) {
       return Arrays.stream(Rank.values()).filter(r -> r.getToken().equals(token)).findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Token not allowed: " + token));

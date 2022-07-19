@@ -10,7 +10,7 @@ public enum Suit {
    CLUBS,
    DIAMONDS;
 
-   @JsonCreator
+   @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
    public static Suit forName(final String name) {
       return Arrays.stream(Suit.values()).filter(s -> s.name().equalsIgnoreCase(name)).findFirst()
             .orElseThrow(IllegalArgumentException::new);

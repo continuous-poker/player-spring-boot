@@ -2,7 +2,7 @@
 
 Your task is to implement the best poker player logic! :)
 
-## Preparation:
+## Preparation
 1. Choose a team name (PokerPenguins?)
 2. Fork this repository
 3. Add the following secrets (values will be provided by the facilitator):
@@ -11,11 +11,14 @@ Your task is to implement the best poker player logic! :)
    * GCP_EMAIL
    * GCP_ACCOUNT_KEY
    * TEAMNAME (your team name - only letters, digits and dashes)
-4. Run the main workflow in GitHub
+4. Run the main workflow in GitHub - it will be deployed automatically
 5. Notify the facilitator once you are done :)
 
 
 ## How it works
+### Run it locally
+```mvn spring-boot:run```
+
 ### Your player bot
 Your application provides a single endpoint at the root path (/).
 This endpoint accepts a table object, which gives you an overview about the
@@ -77,3 +80,7 @@ retrieve their bets. This is a sample JSON of the table information provided to 
 	}]
 }
 ```
+## Start the game
+Now it's your turn! Start implementing the Strategy class to do more than just fold every turn.
+Or rework the whole application. You can do what you want, as long as you provide the endpoint that is registered in the game.
+Have fun!

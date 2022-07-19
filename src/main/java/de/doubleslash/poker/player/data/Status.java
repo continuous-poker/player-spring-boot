@@ -9,7 +9,7 @@ public enum Status {
    FOLDED,
    OUT;
 
-   @JsonCreator
+   @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
    public static Status forName(final String name) {
       return Arrays.stream(Status.values()).filter(s -> s.name().equalsIgnoreCase(name)).findFirst()
             .orElseThrow(IllegalArgumentException::new);
