@@ -38,7 +38,7 @@ jobs:
         with:
           service_account_email: ${{ secrets.GCP_EMAIL }}
           service_account_key: ${{ secrets.GCP_ACCOUNT_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT }}
+          project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
 
       - name: Push the Docker image to GCP
