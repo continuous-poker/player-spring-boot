@@ -55,6 +55,6 @@ jobs:
 
       - name: Deploy
         run: |-
-          kubectl apply -f target/kubernetes/kubernetes.yml
+          kubectl apply -f target/classes/META-INF/jkube/kubernetes.yml
           kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }}
           kubectl get services -o wide
