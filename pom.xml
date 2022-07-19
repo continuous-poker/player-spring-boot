@@ -24,6 +24,10 @@
 		<java.version>1.8</java.version>
 		<spring-boot.build-image.imageName>continuous-poker/${project.artifactId}:latest</spring-boot.build-image.imageName>
 		<jkube.generator.name>${spring-boot.build-image.imageName}</jkube.generator.name>
+		<jkube.enricher.jkube-service.type>LoadBalancer</jkube.enricher.jkube-service.type>
+		<deployment.name>${project.artifactId}</deployment.name>
+		<jkube.enricher.jkube-service.name>${deployment.name}</jkube.enricher.jkube-service.name>
+		<jkube.enricher.jkube-controller.name>${deployment.name}</jkube.enricher.jkube-controller.name>
 	</properties>
 
 	<dependencies>
