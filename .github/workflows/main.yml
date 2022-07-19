@@ -1,0 +1,60 @@
+on: [push]
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  GKE_CLUSTER: ${{ secrets.GCP_CLUSTER }}    # Add your cluster name here.
+  GKE_ZONE: us-central1   # Add your cluster zone here.
+  DEPLOYMENT_NAME: ${{ secrets.TEAMNAME }} # Add your deployment name here.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build app
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@master
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        run: |
+          mvn --batch-mode --update-snapshots clean spring-boot:build-image -Dspring-boot.build-image.imageName=gcr.io/${{ env.PROJECT_ID }}/${{ env.DEPLOYMENT_NAME }}:latest
+
+      - name: Login to GCP
+        uses: google-github-actions/setup-gcloud@v0.6.0
+        with:
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          service_account_key: ${{ secrets.GCP_ACCOUNT_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT }}
+          export_default_credentials: true
+
+      - name: Push the Docker image to GCP
+        run: |
+          gcloud auth configure-docker --quiet
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.DEPLOYMENT_NAME }}
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GCP_ACCOUNT_KEY }}
+
+      - name: Deploy
+        run: |-
+          kubectl apply -f target/kubernetes/kubernetes.yml
+          kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }}
+          kubectl get services -o wide
