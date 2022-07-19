@@ -68,6 +68,7 @@
 				<version>1.8.0</version>
 				<configuration>
 					<resources>
+						<namespace>techdays</namespace>
 						<services>
 							<service>
 								<name>${deployment.name}</name>
