@@ -29,7 +29,7 @@ your current stack of chips, you have to decide how much you want to bet.
 If all players have successfully deployed their application and registered it
 with the game, the dealer service will start playing tournaments over and over.
 Each player has a starting stack of 100 chips. The blinds will start low but increase over time in each tournament.
-The player who wins the tournament receives 10 points, second place will yield you 5 points.
+The player who wins the tournament receives 1 point on the total scoreboard.
 After that, the next tournament starts automatically.
 
 ### Betting round
