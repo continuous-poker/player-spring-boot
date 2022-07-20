@@ -11,7 +11,7 @@ import de.doubleslash.poker.player.logic.Strategy;
 @RestController
 public class PlayerController {
 
-   @PostMapping("/")
+   @PostMapping(value = "/", produces = "text/plain", consumes = "application/json")
    @ResponseBody
    public int action(@RequestBody final Table table) {
       final Strategy player = new Strategy();
