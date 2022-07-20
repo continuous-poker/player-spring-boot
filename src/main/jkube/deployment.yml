@@ -1,3 +1,5 @@
+metadata:
+  name: ${deployment.name}
 spec:
   replicas: 1
   template:
