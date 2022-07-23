@@ -8,8 +8,13 @@ Your task is to implement the best poker player logic! :)
 3. Add the following secrets (values will be provided by the facilitator):
    * TOKEN
    * PORT
-   * TEAMNAME (your team name - only letters, digits and dashes)
-4. Run the main workflow in GitHub - it will be deployed automatically
+   * TEAMNAME (your team name - only lowercase letters, digits and dashes)
+4. Run the main workflow in GitHub - it will be deployed automatically  
+   Note: check your GitHub name - it is used for the Docker image name and must
+   conform with the regulations (only lowercase letters, digits, "." and "-").
+   If your GitHub name contains uppercase letters, just replace the variable 
+   ```${{ github.repository_owner }}``` in the workflow file with a lowercase version
+   of your name.
 5. Notify the facilitator once you are done :)
 
 
