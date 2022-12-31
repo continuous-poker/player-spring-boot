@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.doubleslash.poker</groupId>
+	<groupId>org.continuouspoker</groupId>
 	<artifactId>player</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.1</version>
+		<version>2.7.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -25,6 +25,7 @@
 		<spring-boot.build-image.imageName>continuous-poker/${project.artifactId}:latest</spring-boot.build-image.imageName>
 		<jkube.generator.name>${spring-boot.build-image.imageName}</jkube.generator.name>
 		<deployment.name>${project.artifactId}</deployment.name>
+		<deployment.namespace>poker</deployment.namespace>
 		<deployment.port>30000</deployment.port>
 		<jkube.enricher.jkube-controller.name>${deployment.name}</jkube.enricher.jkube-controller.name>
 		<jkube.offline>true</jkube.offline>
@@ -54,6 +55,16 @@
 		   <groupId>org.apache.commons</groupId>
 		   <artifactId>commons-lang3</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.2.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -61,6 +72,30 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>6.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/api-spec.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>org.continuouspoker.player.api</apiPackage>
+							<modelPackage>org.continuouspoker.player.model</modelPackage>
+							<supportingFilesToGenerate>
+								ApiUtil.java
+							</supportingFilesToGenerate>
+							<configOptions>
+								<delegatePattern>true</delegatePattern>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.jkube</groupId>
@@ -71,7 +106,7 @@
 						<namespace>techdays</namespace>
 						<services>
 							<service>
-								<name>${deployment.name}</name>
+								<name>${deployment.namespace}</name>
 								<type>NodePort</type>
 								<ports>
 									<port>

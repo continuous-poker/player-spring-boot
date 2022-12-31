@@ -1,4 +1,4 @@
-package de.doubleslash.poker.player;
+package org.continuouspoker.player;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
