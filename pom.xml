@@ -26,7 +26,6 @@
 		<jkube.generator.name>${spring-boot.build-image.imageName}</jkube.generator.name>
 		<deployment.name>${project.artifactId}</deployment.name>
 		<deployment.namespace>poker</deployment.namespace>
-		<deployment.port>30000</deployment.port>
 		<jkube.enricher.jkube-controller.name>${deployment.name}</jkube.enricher.jkube-controller.name>
 		<jkube.offline>true</jkube.offline>
 	</properties>
@@ -103,16 +102,15 @@
 				<version>1.8.0</version>
 				<configuration>
 					<resources>
-						<namespace>techdays</namespace>
+						<namespace>${deployment.namespace}</namespace>
 						<services>
 							<service>
-								<name>${deployment.namespace}</name>
+								<name>${deployment.name}</name>
 								<type>LoadBalancer</type>
 								<ports>
 									<port>
 										<port>80</port>
 										<targetPort>8080</targetPort>
-										<nodePort>${deployment.port}</nodePort>
 									</port>
 								</ports>
 							</service>
