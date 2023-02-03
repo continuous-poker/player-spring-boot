@@ -3,7 +3,6 @@ on: [push]
 env:
   DEPLOYMENT_NAME: ${{ secrets.TEAMNAME }}
   K8S_NAMESPACE: ${{ secrets.NAMESPACE }}
-  DEPLOYMENT_PORT: ${{ secrets.PORT }}
   DEPLOYMENT_TOKEN: ${{ secrets.TOKEN }}
 
 jobs:
@@ -31,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: |
-          mvn --batch-mode --update-snapshots clean spring-boot:build-image k8s:resource -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository_owner }}/${{ env.DEPLOYMENT_NAME }}:latest -Ddeployment.name=${{ env.DEPLOYMENT_NAME }} -Ddeployment.namespace=${{ env.K8S_NAMESPACE }} -Ddeployment.port=${{ env.DEPLOYMENT_PORT }}
+          mvn --batch-mode --update-snapshots clean spring-boot:build-image k8s:resource -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository_owner }}/${{ env.DEPLOYMENT_NAME }}:latest -Ddeployment.name=${{ env.DEPLOYMENT_NAME }} -Ddeployment.namespace=${{ env.K8S_NAMESPACE }}
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin

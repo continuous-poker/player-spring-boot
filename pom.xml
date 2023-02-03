@@ -107,10 +107,10 @@
 						<services>
 							<service>
 								<name>${deployment.namespace}</name>
-								<type>NodePort</type>
+								<type>LoadBalancer</type>
 								<ports>
 									<port>
-										<port>8080</port>
+										<port>80</port>
 										<targetPort>8080</targetPort>
 										<nodePort>${deployment.port}</nodePort>
 									</port>
