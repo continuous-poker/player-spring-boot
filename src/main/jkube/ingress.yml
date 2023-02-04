@@ -1,4 +1,5 @@
-kind: Ingress
+metadata:
+  name: ${deployment.name}-ingress
 spec:
   ingressClassName: nginx
   rules:
