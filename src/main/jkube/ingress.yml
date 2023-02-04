@@ -1,0 +1,14 @@
+kind: Ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ${deployment.name}.play.continuouspoker.org
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: ${deployment.name}-service
+                port:
+                  number: 80
+            path: /
