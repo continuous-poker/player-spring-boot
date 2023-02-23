@@ -7,7 +7,7 @@ Your task is to implement the best poker player logic! :)
 2. Fork this repository
 3. Add the following secrets (values will be provided by the facilitator):
    * TOKEN
-   * PORT
+   * NAMESPACE
    * TEAMNAME (your team name - only lowercase letters, digits and dashes)
 4. Run the main workflow in GitHub - it will be deployed automatically  
    Note: check your GitHub name - it is used for the Docker image name and must
