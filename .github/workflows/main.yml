@@ -3,8 +3,8 @@ on:
   push:
 
 env:
-  DEPLOYMENT_NAME: ${{ secrets.TEAMNAME }}
-  K8S_NAMESPACE: ${{ secrets.NAMESPACE }}
+  DEPLOYMENT_NAME: ${{ vars.TEAMNAME }}
+  K8S_NAMESPACE: ${{ vars.NAMESPACE }}
   DEPLOYMENT_TOKEN: ${{ secrets.TOKEN }}
 
 jobs:
@@ -30,24 +30,25 @@ jobs:
 
       - name: Prepare repository name
         run: |
-          echo IMAGE_REPOSITORY=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
 
       - name: Build jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: |
-          mvn --batch-mode --update-snapshots clean spring-boot:build-image k8s:resource -Dspring-boot.build-image.imageName=ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ env.DEPLOYMENT_NAME }}:latest -Ddeployment.name=${{ env.DEPLOYMENT_NAME }} -Ddeployment.namespace=${{ env.K8S_NAMESPACE }}
+          mvn --batch-mode --update-snapshots clean spring-boot:build-image k8s:resource -Dspring-boot.build-image.imageName=ghcr.io/${{ env.IMAGE_REPOSITORY }}:latest -Ddeployment.name=${{ env.DEPLOYMENT_NAME }} -Ddeployment.namespace=${{ env.K8S_NAMESPACE }}
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push the Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ env.IMAGE_REPOSITORY }}/${{ env.DEPLOYMENT_NAME }}
+          docker push ghcr.io/${{ env.IMAGE_REPOSITORY }}
 
       
 
       - name: Deploy
+        if: github.ref == 'refs/heads/main'
         run: |-
           echo "${{ env.DEPLOYMENT_TOKEN }}" > kubeconfig.yaml
           kubectl --kubeconfig kubeconfig.yaml apply -f target/classes/META-INF/jkube/kubernetes.yml --validate=false
