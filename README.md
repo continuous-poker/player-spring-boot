@@ -5,9 +5,9 @@ Your task is to implement the best poker player logic! :)
 ## Preparation
 1. Choose a team name (PokerPenguins?)
 2. Fork this repository
-3. Add the following secret ([click here](./settings/secrets/actions/new)):
+3. Add the following secret:
    * TOKEN (value will be provided by the facilitator)
-4. Add the following variables ([click here](./settings/variables/actions/new)):
+4. Add the following variables:
    * NAMESPACE (value will be provided by the facilitator)
    * TEAMNAME (your team name - only lowercase letters, digits and dashes, must start with a lowercase letter)
 4. Run the main workflow in GitHub - it will be deployed automatically
