@@ -4,6 +4,10 @@ metadata:
   name: ${deployment.name}-ingress
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - ${deployment.name}.play.continuouspoker.org
+      secretName: letsencrypt-nginx-private-key
   rules:
     - host: ${deployment.name}.play.continuouspoker.org
       http:
