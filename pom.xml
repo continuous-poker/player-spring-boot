@@ -107,28 +107,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jkube</groupId>
-				<artifactId>kubernetes-maven-plugin</artifactId>
-				<version>1.14.0</version>
-				<configuration>
-					<resources>
-						<namespace>${deployment.namespace}</namespace>
-						<services>
-							<service>
-								<name>${deployment.name}-service</name>
-								<type>ClusterIP</type>
-								<ports>
-									<port>
-										<port>80</port>
-										<targetPort>8080</targetPort>
-									</port>
-								</ports>
-							</service>
-						</services>
-					</resources>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
