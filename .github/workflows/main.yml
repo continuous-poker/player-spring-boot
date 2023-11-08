@@ -72,7 +72,7 @@ jobs:
           --set "ingress.hosts[0].host=${{ env.DEPLOYMENT_NAME }}.play.continuouspoker.org" \
           --set "ingress.hosts[0].paths[0].path=/" \
           --set "ingress.tls[0].hosts[0]=${{ env.DEPLOYMENT_NAME }}.play.continuouspoker.org" \
-          --set "ingress.tls[0].secretName=letsencrypt-nginx-private-key" \
+          --set "ingress.tls[0].secretName=letsencrypt-nginx-${{ env.DEPLOYMENT_NAME }}" \
           --set "ingress.hosts[0].paths[0].pathType=ImplementationSpecific" \
           --set "image.repository=ghcr.io/${{ env.IMAGE_REPOSITORY }}" \
           --namespace ${{ env.NAMESPACE }} \
