@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefaultController {
     @GetMapping("/")
     public String defaultEndpoint(){
-        return "It works!";
+        return "Spring Boot Player";
     }
 
 }
